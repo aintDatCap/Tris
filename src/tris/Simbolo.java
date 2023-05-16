@@ -1,16 +1,21 @@
 package tris;
 
 public enum Simbolo {
-    X(1),
-    O(-1),
-    Nessuno(0);
+    X(1, 'X'),
+    O(-1, 'O'),
+    Nessuno(0, ' ');
 
-    private int value;
-    Simbolo(int value) {
+    private final int value;
+    private final char c;
+    Simbolo(int value, char c) {
         this.value = value;
+        this.c = c;
     }
 
     public int getValue() {
         return value;
+    }
+    public char asChar() {
+        return c;
     }
 }

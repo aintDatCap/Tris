@@ -1,20 +1,36 @@
 package tris;
 
 
+import tris.bot.Bot;
+import tris.bot.Coordinate;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Tris {
-    private Simbolo[][] tabella = new Simbolo[3][3];
+    private final Simbolo[][] tabella = new Simbolo[3][3];
     private Simbolo turno = Simbolo.X;
     private RisultatoPartita risultatoPartita = RisultatoPartita.PartitaNonConclusa;
+    private Bot bot = null;
+
+    private Consumer<Coordinate> dopoUnaMossa;
 
     // Costruttore per inizializzare la tabella con sole caselle vuote
     public Tris() {
-        for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 3; j++)
-                tabella[i][j] = Simbolo.Nessuno;
+        pulisciTabella();
+    }
+
+    public Tris(Consumer<Coordinate> dopoUnaMossa) {
+        this.dopoUnaMossa = dopoUnaMossa;
+        pulisciTabella();
+    }
+
+    public Tris(Bot bot, Consumer<Coordinate> dopoUnaMossa ) {
+        this.dopoUnaMossa = dopoUnaMossa;
+        pulisciTabella();
+        this.bot = bot;
     }
 
     public void mossa(int x, int y) {
@@ -25,43 +41,56 @@ public class Tris {
             tabella[x][y] = turno;
         turno = turno == Simbolo.X ? Simbolo.O : Simbolo.X; // cambio turno
 
+        dopoUnaMossa.accept(new Coordinate(x,y));
+
         risultatoPartita = controllaVincitore();
+
+        if(risultatoPartita == RisultatoPartita.PartitaNonConclusa && bot != null && turno == Simbolo.O) {
+            Coordinate coordinate = bot.mossa(tabella);
+            mossa(coordinate.getX(), coordinate.getY());
+        }
+    }
+
+    public void pulisciTabella() {
+        for(int i = 0; i < 3; i++)
+            Arrays.fill(tabella[i], Simbolo.Nessuno);
+    }
+
+    public char carattereDellaCella(int x, int y) {
+        return tabella[x][y].asChar();
+    }
+    public char carattereDellaCella(Coordinate coordinate){
+        return tabella[coordinate.getX()][coordinate.getY()].asChar();
     }
 
     public RisultatoPartita controllaVincitore() {
         List<Integer> valori = new ArrayList<>();
+
         // Righe e colonne
         for(int i = 0; i < 3; i++) {
+            int sommaRiga = 0;
+            int sommaColonna = 0;
             for(int j = 0; j < 3; j++) {
-                valori.add(tabella[i][j].getValue()); // riga
-                valori.add(tabella[j][i].getValue()); // colonna
+                sommaRiga += tabella[i][j].getValue(); // riga
+                sommaColonna += tabella[j][i].getValue(); // colonna
             }
+            valori.add(sommaRiga);
+            valori.add(sommaColonna);
         }
+
+        int sommaDiagonale1 = 0;
+        int sommaDiagonale2 = 0;
         for(int i = 0; i < 3; i++) {
-            valori.add(tabella[i][i].getValue()); // diagonale
-            valori.add(tabella[2-i][2-i].getValue()); // diagonale opposta
+            sommaDiagonale1 += tabella[i][i].getValue(); // diagonale
+            sommaDiagonale2 += tabella[2-i][i].getValue(); // diagonale opposta
         }
-        // Righe e diagonale
-        for(int i = 0; i < valori.size(); i+=6) {
-            int somma = 0;
-            for(int j = i;  j < i + 6; j+=2)
-                somma += valori.get(j);
+        valori.add(sommaDiagonale1);
+        valori.add(sommaDiagonale2);
 
-            if(somma == 3)
+        for (int valore : valori) {
+            if (valore == 3)
                 return RisultatoPartita.daSimbolo(Simbolo.X);
-            if(somma == -3)
-                return RisultatoPartita.daSimbolo(Simbolo.O);
-        }
-
-        // Colonne e diagonale opposta
-        for(int i = 1; i < valori.size(); i+=6) {
-            int somma = 0;
-            for(int j = i;  j < i + 6; j+=2)
-                somma += valori.get(j);
-
-            if(somma == 3)
-                return RisultatoPartita.daSimbolo(Simbolo.X);
-            if(somma == -3)
+            if (valore == -3)
                 return RisultatoPartita.daSimbolo(Simbolo.O);
         }
 
@@ -80,15 +109,13 @@ public class Tris {
             string.append("\n");
             for(Simbolo simbolo: simboli) {
                 string.append("\t");
-
-                if(simbolo == Simbolo.X)
-                    string.append("X");
-                else if (simbolo == Simbolo.O)
-                    string.append("O");
-                else
-                    string.append(" ");
+                string.append(simbolo.asChar());
             }
         }
         return string.toString();
+    }
+
+    public Simbolo[][] getTabella() {
+        return tabella;
     }
 }
