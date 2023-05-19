@@ -21,7 +21,7 @@ public class Tris {
     public Tris() {
         pulisciTabella();
     }
-
+    // callback
     public Tris(Consumer<Coordinate> dopoUnaMossa) {
         this.dopoUnaMossa = dopoUnaMossa;
         pulisciTabella();
@@ -37,17 +37,18 @@ public class Tris {
         if(risultatoPartita != RisultatoPartita.PartitaNonConclusa)
             return;
 
-        if(tabella[x][y] == Simbolo.Nessuno)
+        if(tabella[x][y] == Simbolo.Nessuno){
             tabella[x][y] = turno;
-        turno = turno == Simbolo.X ? Simbolo.O : Simbolo.X; // cambio turno
+            turno = turno == Simbolo.X ? Simbolo.O : Simbolo.X; // cambio turno
 
-        dopoUnaMossa.accept(new Coordinate(x,y));
+            dopoUnaMossa.accept(new Coordinate(x,y));
 
-        risultatoPartita = controllaVincitore();
+            risultatoPartita = controllaVincitore();
 
-        if(risultatoPartita == RisultatoPartita.PartitaNonConclusa && bot != null && turno == Simbolo.O) {
-            Coordinate coordinate = bot.mossa(tabella);
-            mossa(coordinate.getX(), coordinate.getY());
+            if(risultatoPartita == RisultatoPartita.PartitaNonConclusa && bot != null && turno == Simbolo.O) {
+                Coordinate coordinate = bot.mossa(tabella);
+                mossa(coordinate.getX(), coordinate.getY());
+            }
         }
     }
 
@@ -109,7 +110,7 @@ public class Tris {
             string.append("\n");
             for(Simbolo simbolo: simboli) {
                 string.append("\t");
-                string.append(simbolo.asChar());
+                string.append(simbolo.asChar()); // inserimento carattere
             }
         }
         return string.toString();
