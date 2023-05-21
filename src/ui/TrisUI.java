@@ -1,53 +1,56 @@
 package ui;
 
 import tris.Tris;
-import tris.bot.RandomBot;
+import tris.bot.Bot;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class TrisUI {
-    private JPanel panel;
+public class TrisUI extends JPanel {
+    private JButton[][] bottoni = new JButton[3][3];
     private Tris tris;
-    private final JButton[][] bottoni = new JButton[3][3];
+    public TrisUI(Bot bot) {
+        setLayout(new GridLayout(3,3));
 
-    public TrisUI() {
-        tris = new Tris(new RandomBot(), coordinate -> {
-            JButton button = bottoni[coordinate.getX()][coordinate.getY()];
-            button.setText(String.valueOf(tris.carattereDellaCella(coordinate.getX(), coordinate.getY())));
-        });
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("TrisUI");
-        frame.setSize(1080, 720);
-        frame.setContentPane(new TrisUI().panel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
-
-    private void createUIComponents() {
-        panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 3));
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                JButton button = new JButton();
-                button.setFont(new Font("button_font", Font.PLAIN, 60));
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 3; j++) {
+                JButton bottone = new JButton("");
+                bottone.setFont(new Font("Arial", Font.BOLD, 60));
+                bottone.setBackground(new Color(240, 240, 240));
 
                 int finalI = i;
                 int finalJ = j;
-                button.addActionListener(event -> {
+                bottone.addActionListener(event -> {
                     tris.mossa(finalI, finalJ);
                 });
-
-                bottoni[i][j] = button;
-                panel.add(button);
+                add(bottone);
+                bottoni[i][j] = bottone;
             }
+
+        if(bot == null) {
+            dueGiocatori();
+        } else {
+            giocatoreSingolo(bot);
         }
     }
 
-    public JPanel getPanel() {
-        return panel;
+    public void giocatoreSingolo(Bot bot) {
+        tris = new Tris(bot, coordinate -> {
+            bottoni[coordinate.getX()][coordinate.getY()].setText(tris.carattereDellaCella(coordinate));
+        });
+    }
+
+    public void dueGiocatori() {
+        tris = new Tris(coordinate -> {
+            bottoni[coordinate.getX()][coordinate.getY()].setText(tris.carattereDellaCella(coordinate));
+        });
+    }
+
+    public void pulisci() {
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 3; j++)
+                bottoni[i][j].setText("");
+
+        tris.pulisciTabella();
     }
 }

@@ -15,7 +15,7 @@ public enum Simbolo {
     public int getValue() {
         return value;
     }
-    public char asChar() {
-        return c;
+    public String asString() {
+        return String.valueOf(c);
     }
 }

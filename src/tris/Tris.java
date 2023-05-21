@@ -57,11 +57,11 @@ public class Tris {
             Arrays.fill(tabella[i], Simbolo.Nessuno);
     }
 
-    public char carattereDellaCella(int x, int y) {
-        return tabella[x][y].asChar();
+    public String carattereDellaCella(int x, int y) {
+        return tabella[x][y].asString();
     }
-    public char carattereDellaCella(Coordinate coordinate){
-        return tabella[coordinate.getX()][coordinate.getY()].asChar();
+    public String carattereDellaCella(Coordinate coordinate){
+        return tabella[coordinate.getX()][coordinate.getY()].asString();
     }
 
     public RisultatoPartita controllaVincitore() {
@@ -110,7 +110,7 @@ public class Tris {
             string.append("\n");
             for(Simbolo simbolo: simboli) {
                 string.append("\t");
-                string.append(simbolo.asChar()); // inserimento carattere
+                string.append(simbolo.asString()); // inserimento carattere
             }
         }
         return string.toString();

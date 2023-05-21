@@ -1,35 +1,27 @@
 package ui;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class Menu {
-    private JPanel panel;
-    private JButton singleplayerButton;
-    private JButton multiplayerButton;
+public class Menu extends JFrame {
+    private JButton giocaButton;
     private JButton statisticheButton;
 
+    private JPanel panel;
+
+
     public Menu() {
-        singleplayerButton.addActionListener(e -> {
-            JFrame frame = new JFrame("Singleplayer");
-            frame.setContentPane(new TrisUI().getPanel());
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1080, 720);
-            frame.setVisible(true);
+        giocaButton.addActionListener(e -> {
+            new FinestraGioco();
+            dispose();
+        });
+        statisticheButton.addActionListener(e -> {
+            dispose();
         });
 
-
-        multiplayerButton.addActionListener(e -> {
-
-        });
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Menu");
-        frame.setContentPane(new Menu().panel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1080, 720);
-        frame.setVisible(true);
+        setTitle("Tris - menu");
+        setContentPane(panel);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setSize(1080, 720);
+        setVisible(true);
     }
 }
