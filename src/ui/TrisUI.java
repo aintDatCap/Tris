@@ -1,7 +1,5 @@
 package ui;
 
-import tris.Simbolo;
-import tris.Statistiche;
 import tris.Tris;
 import tris.bot.Bot;
 
@@ -9,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TrisUI extends JPanel {
-    private JButton[][] bottoni = new JButton[3][3];
+    private final JButton[][] bottoni = new JButton[3][3];
     private Tris tris;
 
     public TrisUI(Bot bot) {

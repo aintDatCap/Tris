@@ -1,6 +1,5 @@
 package ui;
 
-import tris.Statistiche;
 import tris.Tris;
 
 import javax.swing.*;

@@ -33,18 +33,10 @@ public class DifficultBot implements Bot{
 
 
             switch (risultato) {
-                case Pareggio -> {
-                    punteggio = 0;
-                }
-                case VinceX -> {
-                    punteggio = -1;
-                }
-                case VinceO -> {
-                    punteggio = 1;
-                }
-                case PartitaNonConclusa -> {
-                    punteggio = - punteggioMossa(testTris.getTabella());
-                }
+                case Pareggio -> punteggio = 0;
+                case VinceX -> punteggio = -1;
+                case VinceO -> punteggio = 1;
+                case PartitaNonConclusa -> punteggio = - punteggioMossa(testTris.getTabella());
             }
         }
         return punteggio;
