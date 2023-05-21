@@ -7,8 +7,7 @@ import javax.swing.*;
 public class FinestraGioco extends JFrame{
     private JPanel panel;
     private JButton menuButton;
-    private JButton facileButton;
-    private JButton difficileButton;
+    private JButton botButton;
     private JPanel trisPanel;
     private JButton dueGiocatoriButton;
 
@@ -20,7 +19,7 @@ public class FinestraGioco extends JFrame{
         dueGiocatoriButton.addActionListener(e -> {
             ((TrisUI)trisPanel).dueGiocatori();
         });
-        facileButton.addActionListener(e -> {
+        botButton.addActionListener(e -> {
             ((TrisUI)trisPanel).giocatoreSingolo(new RandomBot());
         });
 

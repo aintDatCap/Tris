@@ -10,25 +10,35 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class Tris {
-    private final Simbolo[][] tabella = new Simbolo[3][3];
+    public static Statistiche statistiche;
+
+    private Simbolo[][] tabella = new Simbolo[3][3];
     private Simbolo turno = Simbolo.X;
     private RisultatoPartita risultatoPartita = RisultatoPartita.PartitaNonConclusa;
     private Bot bot = null;
 
     private Consumer<Coordinate> dopoUnaMossa;
+    private Consumer<RisultatoPartita> finitaLaPartita;
 
     // Costruttore per inizializzare la tabella con sole caselle vuote
     public Tris() {
         pulisciTabella();
     }
+
+    public Tris(Simbolo[][] tabella) {
+        this.tabella = tabella;
+    }
+
     // callback
-    public Tris(Consumer<Coordinate> dopoUnaMossa) {
+    public Tris(Consumer<Coordinate> dopoUnaMossa, Consumer<RisultatoPartita> finitaLaPartita) {
         this.dopoUnaMossa = dopoUnaMossa;
+        this.finitaLaPartita = finitaLaPartita;
         pulisciTabella();
     }
 
-    public Tris(Bot bot, Consumer<Coordinate> dopoUnaMossa ) {
+    public Tris(Bot bot, Consumer<Coordinate> dopoUnaMossa, Consumer<RisultatoPartita> finitaLaPartita ) {
         this.dopoUnaMossa = dopoUnaMossa;
+        this.finitaLaPartita = finitaLaPartita;
         pulisciTabella();
         this.bot = bot;
     }
@@ -50,6 +60,10 @@ public class Tris {
                 mossa(coordinate.getX(), coordinate.getY());
             }
         }
+
+        if(risultatoPartita != RisultatoPartita.PartitaNonConclusa) {
+            finitaLaPartita.accept(risultatoPartita);
+        }
     }
 
     public void pulisciTabella() {
@@ -57,9 +71,6 @@ public class Tris {
             Arrays.fill(tabella[i], Simbolo.Nessuno);
     }
 
-    public String carattereDellaCella(int x, int y) {
-        return tabella[x][y].asString();
-    }
     public String carattereDellaCella(Coordinate coordinate){
         return tabella[coordinate.getX()][coordinate.getY()].asString();
     }
@@ -118,9 +129,5 @@ public class Tris {
 
     public Simbolo[][] getTabella() {
         return tabella;
-    }
-
-    public Simbolo turnoCorrente(){
-        return turno;
     }
 }

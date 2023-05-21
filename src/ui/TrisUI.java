@@ -1,6 +1,7 @@
 package ui;
 
 import tris.Simbolo;
+import tris.Statistiche;
 import tris.Tris;
 import tris.bot.Bot;
 
@@ -39,6 +40,25 @@ public class TrisUI extends JPanel {
     public void giocatoreSingolo(Bot bot) {
         tris = new Tris(bot, coordinate -> {
             bottoni[coordinate.getX()][coordinate.getY()].setText(tris.carattereDellaCella(coordinate));
+        }, risultatoPartita -> {
+            for(int i = 0; i < 3; i++)
+                for(int j = 0; j < 3; j++)
+                    bottoni[i][j].setEnabled(false);
+
+            switch (risultatoPartita) {
+                case Pareggio -> {
+                    JOptionPane.showMessageDialog(this, "La partita è finita in pareggio");
+                    Tris.statistiche.aggiungiPareggio();
+                }
+                case VinceX -> {
+                    JOptionPane.showMessageDialog(this, "Congratulazioni al giocatore per la vittoria");
+                    Tris.statistiche.aggiungiVittoriaX();
+                }
+                case VinceO -> {
+                    JOptionPane.showMessageDialog(this, "Congratulazioni al bot per la vittoria");
+                    Tris.statistiche.aggiungiVittoriaO();
+                }
+            }
         });
         pulisci();
     }
@@ -46,16 +66,37 @@ public class TrisUI extends JPanel {
     public void dueGiocatori() {
         tris = new Tris(coordinate -> {
             bottoni[coordinate.getX()][coordinate.getY()].setText(tris.carattereDellaCella(coordinate));
+        }, risultatoPartita -> {
+            for(int i = 0; i < 3; i++)
+                for(int j = 0; j < 3; j++)
+                    bottoni[i][j].setEnabled(false);
+
+            switch (risultatoPartita) {
+                case Pareggio -> {
+                    JOptionPane.showMessageDialog(this, "La partita è finita in pareggio");
+                    Tris.statistiche.aggiungiPareggio();
+                }
+                case VinceX -> {
+                    JOptionPane.showMessageDialog(this, "Congratulazioni ad X per la vittoria");
+                    Tris.statistiche.aggiungiVittoriaX();
+                }
+                case VinceO -> {
+                    JOptionPane.showMessageDialog(this, "Congratulazioni ad O per la vittoria");
+                    Tris.statistiche.aggiungiVittoriaO();
+                }
+            }
+
         });
         pulisci();
     }
 
     public void pulisci() {
         for(int i = 0; i < 3; i++)
-            for(int j = 0; j < 3; j++)
+            for(int j = 0; j < 3; j++) {
                 bottoni[i][j].setText("");
+                bottoni[i][j].setEnabled(true);
+            }
 
         tris.pulisciTabella();
     }
-
 }

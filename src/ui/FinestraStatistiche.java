@@ -1,6 +1,7 @@
 package ui;
 
 import tris.Statistiche;
+import tris.Tris;
 
 import javax.swing.*;
 
@@ -11,12 +12,18 @@ public class FinestraStatistiche extends JFrame {
     private JLabel vittorieOLabel;
     private JButton tornaAlMenuButton;
 
+
     public FinestraStatistiche() {
 
-        totalePartiteLabel.setText("Partite totali: " + Statistiche.statistiche.getPartiteTotali());
-        vittorieXLabel.setText("Vittorie X: " + Statistiche.statistiche.getVittorieX());
-        vittorieOLabel.setText("Vittorie O: " + Statistiche.statistiche.getVittorieO());
+        totalePartiteLabel.setText("Partite totali: " + Tris.statistiche.getPartiteTotali());
+        vittorieXLabel.setText("Vittorie X: " + Tris.statistiche.getVittorieX());
+        vittorieOLabel.setText("Vittorie O: " + Tris.statistiche.getVittorieO());
 
+
+        tornaAlMenuButton.addActionListener(e -> {
+            new Menu();
+            dispose();
+        });
 
         setTitle("Tris - statistiche");
         setContentPane(panel);
