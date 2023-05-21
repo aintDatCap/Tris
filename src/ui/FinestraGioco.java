@@ -19,13 +19,9 @@ public class FinestraGioco extends JFrame{
         });
         dueGiocatoriButton.addActionListener(e -> {
             ((TrisUI)trisPanel).dueGiocatori();
-            invalidate();
-            validate();
         });
         facileButton.addActionListener(e -> {
             ((TrisUI)trisPanel).giocatoreSingolo(new RandomBot());
-            invalidate();
-            validate();
         });
 
         setTitle("Tris");

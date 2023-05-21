@@ -15,6 +15,7 @@ public class Menu extends JFrame {
             dispose();
         });
         statisticheButton.addActionListener(e -> {
+            new FinestraStatistiche();
             dispose();
         });
 
