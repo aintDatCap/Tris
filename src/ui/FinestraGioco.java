@@ -15,8 +15,8 @@ public class FinestraGioco extends JFrame{
     private JLabel infoPartitaLabel;
 
     public FinestraGioco() {
-        botButton.setForeground(Color.green);
-        dueGiocatoriButton.setForeground(Color.white);
+        botButton.setForeground(Color.white);
+        dueGiocatoriButton.setForeground(Color.green);
 
         menuButton.addActionListener(e -> {
             new Menu();
@@ -24,14 +24,14 @@ public class FinestraGioco extends JFrame{
         });
         dueGiocatoriButton.addActionListener(e -> {
             ((TrisUI)trisPanel).dueGiocatori();
-            botButton.setForeground(Color.green);
-            dueGiocatoriButton.setForeground(Color.white);
+            botButton.setForeground(Color.white);
+            dueGiocatoriButton.setForeground(Color.green);
             infoPartitaLabel.setText("Turno di " + (((TrisUI)trisPanel).getTurno() == Simbolo.X ? "X" : "O"));
         });
         botButton.addActionListener(e -> {
             ((TrisUI)trisPanel).giocatoreSingolo(new RandomBot());
-            botButton.setForeground(Color.white);
-            dueGiocatoriButton.setForeground(Color.green);
+            botButton.setForeground(Color.green);
+            dueGiocatoriButton.setForeground(Color.white);
             infoPartitaLabel.setText("Turno di " + (((TrisUI)trisPanel).getTurno() == Simbolo.X ? "X" : "O"));
         });
 
