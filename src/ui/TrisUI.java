@@ -1,14 +1,17 @@
 package ui;
 
+import tris.Simbolo;
 import tris.Tris;
 import tris.bot.Bot;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.Consumer;
 
 public class TrisUI extends JPanel {
     private final JButton[][] bottoni = new JButton[3][3];
     private Tris tris;
+    private Consumer<Simbolo> cambioTurno;
 
     public TrisUI(Bot bot) {
         setLayout(new GridLayout(3,3));
@@ -38,6 +41,8 @@ public class TrisUI extends JPanel {
     public void giocatoreSingolo(Bot bot) {
         tris = new Tris(bot, coordinate -> {
             bottoni[coordinate.getX()][coordinate.getY()].setText(tris.carattereDellaCella(coordinate));
+            if(cambioTurno != null)
+                cambioTurno.accept(tris.getTurno());
         }, risultatoPartita -> {
             for(int i = 0; i < 3; i++)
                 for(int j = 0; j < 3; j++)
@@ -64,6 +69,8 @@ public class TrisUI extends JPanel {
     public void dueGiocatori() {
         tris = new Tris(coordinate -> {
             bottoni[coordinate.getX()][coordinate.getY()].setText(tris.carattereDellaCella(coordinate));
+            if(cambioTurno != null)
+                cambioTurno.accept(tris.getTurno());
         }, risultatoPartita -> {
             for(int i = 0; i < 3; i++)
                 for(int j = 0; j < 3; j++)
@@ -86,6 +93,14 @@ public class TrisUI extends JPanel {
 
         });
         pulisci();
+    }
+
+    public void setCambioTurno(Consumer<Simbolo> cambioTurno) {
+        this.cambioTurno = cambioTurno;
+    }
+
+    public Simbolo getTurno() {
+        return tris.getTurno();
     }
 
     public void pulisci() {

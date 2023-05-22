@@ -10,11 +10,13 @@ public class FinestraStatistiche extends JFrame {
     private JLabel vittorieXLabel;
     private JLabel vittorieOLabel;
     private JButton tornaAlMenuButton;
+    private JLabel totalePareggiLabel;
 
 
     public FinestraStatistiche() {
 
         totalePartiteLabel.setText("Partite totali: " + Tris.statistiche.getPartiteTotali());
+        totalePareggiLabel.setText("Pareggi totali: " + Tris.statistiche.getPareggiTotali());
         vittorieXLabel.setText("Vittorie X: " + Tris.statistiche.getVittorieX());
         vittorieOLabel.setText("Vittorie O: " + Tris.statistiche.getVittorieO());
 

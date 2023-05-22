@@ -130,4 +130,8 @@ public class Tris {
     public Simbolo[][] getTabella() {
         return tabella;
     }
+
+    public Simbolo getTurno() {
+        return turno;
+    }
 }

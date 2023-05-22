@@ -1,9 +1,8 @@
 package tris;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
-public class Statistiche {
+public class Statistiche implements Serializable {
     private int vittorieX;
     private int vittorieO;
     private int pareggiTotali;
@@ -13,6 +12,16 @@ public class Statistiche {
         vittorieX = 0;
         vittorieO = 0;
         partiteTotali = 0;
+    }
+
+    public Statistiche(String nomeFile) {
+        try {
+            ObjectInputStream file = new ObjectInputStream(new FileInputStream(nomeFile));
+            Tris.statistiche = (Statistiche) file.readObject();
+            file.close();
+        } catch (Exception exception) {
+            Tris.statistiche = new Statistiche();
+        }
     }
 
     public void salvaStatistiche(String nomeFile) {
@@ -28,19 +37,19 @@ public class Statistiche {
     public void aggiungiVittoriaX() {
         vittorieX++;
         partiteTotali++;
-        salvaStatistiche("statistiche.data");
+        salvaStatistiche("./statistiche.data");
     }
 
     public void aggiungiVittoriaO() {
         vittorieO++;
         partiteTotali++;
-        salvaStatistiche("statistiche.data");
+        salvaStatistiche("./statistiche.data");
     }
 
     public void aggiungiPareggio() {
         pareggiTotali++;
         partiteTotali++;
-        salvaStatistiche("statistiche.data");
+        salvaStatistiche("./statistiche.data");
     }
 
     public int getVittorieX() {

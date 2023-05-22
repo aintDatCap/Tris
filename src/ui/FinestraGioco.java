@@ -1,8 +1,10 @@
 package ui;
 
+import tris.Simbolo;
 import tris.bot.RandomBot;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class FinestraGioco extends JFrame{
     private JPanel panel;
@@ -10,17 +12,27 @@ public class FinestraGioco extends JFrame{
     private JButton botButton;
     private JPanel trisPanel;
     private JButton dueGiocatoriButton;
+    private JLabel infoPartitaLabel;
 
     public FinestraGioco() {
+        botButton.setForeground(Color.green);
+        dueGiocatoriButton.setForeground(Color.white);
+
         menuButton.addActionListener(e -> {
             new Menu();
             dispose();
         });
         dueGiocatoriButton.addActionListener(e -> {
             ((TrisUI)trisPanel).dueGiocatori();
+            botButton.setForeground(Color.green);
+            dueGiocatoriButton.setForeground(Color.white);
+            infoPartitaLabel.setText("Turno di " + (((TrisUI)trisPanel).getTurno() == Simbolo.X ? "X" : "O"));
         });
         botButton.addActionListener(e -> {
             ((TrisUI)trisPanel).giocatoreSingolo(new RandomBot());
+            botButton.setForeground(Color.white);
+            dueGiocatoriButton.setForeground(Color.green);
+            infoPartitaLabel.setText("Turno di " + (((TrisUI)trisPanel).getTurno() == Simbolo.X ? "X" : "O"));
         });
 
         setTitle("Tris");
@@ -33,6 +45,9 @@ public class FinestraGioco extends JFrame{
 
     private void createUIComponents() {
         trisPanel = new TrisUI(null);
+        ((TrisUI)trisPanel).setCambioTurno(turno -> {
+            infoPartitaLabel.setText("Turno di " + (turno == Simbolo.X ? "X" : "O"));
+        });
     }
 
 }
